@@ -1,0 +1,247 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/DataTablesLayout.cshtml";
+}
+
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>DataTables Employees</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">DataTables</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- /.card -->
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-tooltip="tooltip" data-placement="right" title="New Employee" data-target="#employeeModal" onclick="setAddEmployeeModal();">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            &nbsp;
+                            <span style="font-weight: bold; font-family: 'Source Sans Pro', sans-serif;">
+                                Add Employee
+                            </span>
+                            
+
+                            <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel">Label</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        @* Input menambahkan data departemen *@
+                                        <form id="addEmployee" method="POST" onsubmit="Save(event)" class="d-none">                                            
+                                            <div class="modal-body">
+                                                
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">First Name</span>
+                                                    </div>
+                                                    <input id="addFirstName" name="addFirstName" type="text" class="form-control" placeholder="Employee First Name" aria-label="first-name" aria-describedby="basic-addon1">
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon2">Last Name</span>
+                                                    </div>
+                                                    <input id="addLastName" name="addLastName" type="text" class="form-control" placeholder="Employee Last Name" aria-label="last-name" aria-describedby="basic-addon2">
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon3">Phone</span>
+                                                    </div>
+                                                    <input id="addPhone" name="addPhone" type="text" class="form-control" placeholder="Employee Phone" aria-label="phone" aria-describedby="basic-addon3">
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon4">Address</span>
+                                                    </div>
+                                                    <input id="addAddress" name="addAddress" type="text" class="form-control" placeholder="Employee Address" aria-label="address" aria-describedby="basic-addon4">
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <label class="input-group-text" for="addDepartmentId">Department</label>
+                                                    </div>
+                                                    <select class="custom-select" id="addDepartmentId" name="addDepartmentId" aria-describedby="addDepartmentId">
+                                                    <option selected disabled>Choose Department</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fas fa-save"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+
+                                        @* Input mengedit data departemen *@
+                                        <form id="editEmployee" method="POST" onsubmit="Update(event)" class="d-none">
+                                            <div class="modal-body">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">NIK</span>
+                                                    </div>
+                                                    <input id="editDepartmentNIK" name="editDepartmentNIK" type="text" class="form-control" placeholder="NIK" aria-label="nik" aria-describedby="basic-addon1" readonly>
+                                                </div>
+                                                
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">First Name</span>
+                                                    </div>
+                                                    <input id="editFirstName" name="editFirstName" type="text" class="form-control" placeholder="First Name" aria-label="first-name" aria-describedby="basic-addon1">
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon2">Last Name</span>
+                                                    </div>
+                                                    <input id="editLastName" name="editLastName" type="text" class="form-control" placeholder="Last Name" aria-label="last-name" aria-describedby="basic-addon2">
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon3">Phone</span>
+                                                    </div>
+                                                    <input id="editPhone" name="editPhone" type="text" class="form-control" placeholder="Phone" aria-label="phone" aria-describedby="basic-addon3">
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon4">Address</span>
+                                                    </div>
+                                                    <input id="editAddress" name="editAddress" type="text" class="form-control" placeholder="Address" aria-label="address" aria-describedby="basic-addon4">
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <label for="editStatus" class="input-group-text">Status</label>
+                                                    </div>
+                                                    <select id="editStatus" name="editStatus" class="form-control" aria-label="status">
+                                                        <option value="3" selected disabled>Choose Status</option>
+                                                        <option value=1>Active</option>
+                                                        <option value=0>Resign</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <label for="editDepartmentId" class="input-group-text">Department</label>
+                                                    </div>
+                                                    <select id="editDepartmentId" name="editDepartmentId" class="form-control" aria-label="department-id">
+                                                        <option value="3" selected disabled>Choose Department</option>
+                                                    </select>                                                    
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-warning">
+                                                    <i class="fas fa-edit"></i> Update
+                                                </button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="tbEmployees" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>NIK</th>
+                                        <th>Name</th>                                        
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Status</th>
+                                        <th>Department</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+
+
+
+
+
+
+@section Scripts{
+    <script src="~/adminlte-3.2.0/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/adminlte-3.2.0/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/jszip/jszip.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+    <!-- AdminLTE App -->
+    <script src="~/adminlte-3.2.0/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    @* <script src="~/adminlte-3.2.0/dist/js/demo.js"></script> *@
+
+    <!-- Page specific script -->
+    <script src="~/js/employeescript.js"></script>    
+
+    @* sweet alert *@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
